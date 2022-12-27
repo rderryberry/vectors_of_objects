@@ -8,6 +8,7 @@
 #ifndef cards_h
 #define cards_h
 
+#include <vector>
 #include <stdio.h>
 
 struct Card {
@@ -30,5 +31,8 @@ struct Card {
     // methods
     void print () const;
 };
+
+// Deck builder
+std::vector<Card> buildDeck ();
 
 #endif /* cards_h */

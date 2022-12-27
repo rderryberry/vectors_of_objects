@@ -10,6 +10,8 @@
 #include <string>
 #include "cards.h"
 
+// Card class
+
 //constructors
 Card::Card()
 {
@@ -103,4 +105,21 @@ void Card::print () const
     ranks[13] = "King";
     
     std::cout << ranks[rank] << " of " << suits[suit] << '\n';
+}
+
+// Deck builder
+
+std::vector<Card> buildDeck () {
+    std::vector<Card> deck (52);
+    int i = 0;
+    for (int suit = 0; suit <= 3; suit++)
+    {
+        for (int rank = 1; rank <= 13; rank++)
+        {
+            deck[i].suit = suit;
+            deck[i].rank = rank;
+            i++;
+        }
+    }
+    return deck;
 }
