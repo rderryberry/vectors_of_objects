@@ -52,13 +52,17 @@ struct Deck {
     
     // constructors
     Deck();
+    Deck(int size);
     
     // methods
     void print () const;
     int find (const Card &card) const;
-    unsigned long extracted(unsigned long card_size, int i);
+    int findBisect (const Card &card) const;
+    
+    Deck subdeck (int lo, int hi) const;
     
     void shuffle (const uint seed = 42);
+    std::vector<Deck> deal (const int n_hands, const int hand_size) const;
 };
 
 

@@ -149,6 +149,12 @@ Deck::Deck()
     }
 }
 
+Deck::Deck(int size)
+{
+    std::vector<Card> temp (size);
+    cards = temp;
+}
+
 // methods
 void Deck::print () const
 {
@@ -163,6 +169,37 @@ int Deck::find (const Card &card) const
         if (cards[i] == card) return i;
     }
     return -1;
+}
+
+// findBisect only works on a sorted deck
+int Deck::findBisect(const Card &card) const
+{
+    int lo {0};
+    int hi {int(cards.size()) - 1};
+    while (lo <= hi)
+    {
+        int mid {lo + (hi - lo) / 2};
+        if (cards[mid] == card) return mid;
+        if (cards[mid] < card)
+        {
+            lo = mid + 1;
+        }
+        else
+        {
+            hi = mid - 1;
+        }
+    }
+    return -1;
+}
+
+Deck Deck::subdeck(int lo, int hi) const
+{
+    Deck sub (hi - lo + 1);
+    for (int i = 0; i < sub.cards.size(); i++)
+    {
+        sub.cards[i] = cards[lo + i];
+    }
+    return sub;
 }
 
 int randomInt(int hi, int lo) {
@@ -180,3 +217,30 @@ void Deck::shuffle(const uint seed)
         cards[swap_index] = temp;
     }
 }
+
+std::vector<Deck> Deck::deal
+ (
+  const int n_hands, const int hand_size
+  ) const {
+      if (n_hands * hand_size > cards.size())
+      {
+          std::cout << "Deck size exception: not enough cards in deck.\n";
+          std::cout << "\t\tn_hands = " << n_hands << '\n';
+          std::cout << "\t\thand_size = " << hand_size << '\n';
+          std::cout << "\t\tdeck_size = " << cards.size() << "\n\n";
+          std::cout << "Returning original deck.";
+          std::vector<Deck> orig (1, *this);
+          return orig;
+      }
+      std::vector<Deck> dealt_hands (n_hands + 1);
+      for (int i = 0; i < n_hands; i++)
+      {
+          dealt_hands[i] = subdeck(i * hand_size, (i + 1) * hand_size - 1);
+      }
+      dealt_hands[n_hands]
+        = subdeck(
+                  n_hands * hand_size,
+                  int(cards.size())
+                  );
+      return dealt_hands;
+  }
