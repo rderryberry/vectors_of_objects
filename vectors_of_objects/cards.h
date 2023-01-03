@@ -61,9 +61,14 @@ struct Deck {
     
     Deck subdeck (int lo, int hi) const;
     
+    Deck mergeSort () const;
+    
     void shuffle (const uint seed = 42);
     std::vector<Deck> deal (const int n_hands, const int hand_size) const;
 };
 
+// Merging algorithm for decks
+
+Deck merge (const Deck &deck1, const Deck &deck2);
 
 #endif /* cards_h */

@@ -16,15 +16,16 @@ int main(int argc, const char * argv[]) {
 //        deck[rand() % 52].print();
 //    }
     Deck deck;
+    
     deck.shuffle();
     std::vector<Deck> hands {deck.deal(4, 5)};
     for (int i = 0; i < 4; i++) {
         std::cout << "Hand " << i << ":\n";
-        hands[i].print();
+        hands[i].mergeSort().print();
         std::cout << std::endl;
     }
     std::cout << "Remaining in pack:\n";
     hands[4].print();
-    
+
     return 0;
 }

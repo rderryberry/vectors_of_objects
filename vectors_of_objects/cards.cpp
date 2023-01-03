@@ -240,7 +240,50 @@ std::vector<Deck> Deck::deal
       dealt_hands[n_hands]
         = subdeck(
                   n_hands * hand_size,
-                  int(cards.size())
+                  int(cards.size()) - 1
                   );
       return dealt_hands;
   }
+
+Deck Deck::mergeSort () const
+{
+    // Basecase: return decks of size 0 or 1
+    if (cards.size() <= 1) return *this;
+    
+    // Recursive sort
+    int mid = int(cards.size()) / 2;
+    Deck subdeck1 = subdeck(0, mid - 1).mergeSort();
+    Deck subdeck2 = subdeck(mid, int(cards.size()) - 1).mergeSort();
+    
+    return merge(subdeck1, subdeck2);
+}
+
+// Use the following to merge two sorted decks
+Deck merge (const Deck &d1, const Deck &d2)
+{
+    int d1_size = int(d1.cards.size());
+    int d2_size = int(d2.cards.size());
+    
+    Deck deck (d1_size + d2_size);
+    int d1_idx = 0;
+    int d2_idx = 0;
+    for (int i = 0; i < d1_size + d2_size; i++)
+    {
+        if (
+            (d1_idx != d1_size)
+            &&
+            (d2_idx == d2_size || d1.cards[d1_idx] < d2.cards[d2_idx])
+            )
+        {
+            deck.cards[i] = d1.cards[d1_idx];
+            d1_idx++;
+        }
+        else
+        {
+            deck.cards[i] = d2.cards[d2_idx];
+            d2_idx++;
+        }
+    }
+    
+    return deck;
+}
